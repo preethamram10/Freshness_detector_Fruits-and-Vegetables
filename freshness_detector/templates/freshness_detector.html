@@ -1,0 +1,168 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Freshness Detector</title>
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6u9ZY3oKu6Zh6BZaoUKGOVl4-1dN1r0epxQ&s" type="image/x-icon"> 
+    
+    <style>
+        body {
+    background-image: url("https://img.freepik.com/free-vector/fruit-vegetables-background-design_23-2148507118.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover; 
+    min-height: 100vh; 
+    width: 100%; 
+    margin: 0;
+    padding: 0;
+    color: white;
+    font-family: Arial, sans-serif;
+    overflow: hidden; 
+}
+
+        .container {
+            width: 70%;
+            margin: 0 auto;
+            margin-top: 10px;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        header {
+            background-color: #26a541;
+            color: white;
+            border-radius: 5px;
+            width: 100%;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+        }
+        .upload-btn-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .btn {
+            background-color: #26a541;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        .upload-btn-wrapper input[type=file] {
+            font-size: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .loading {
+            display: none;
+            position: relative;
+            margin: 20px auto;
+            width: 40px;
+            height: 40px;
+            border: 4px solid #26a541;
+            border-radius: 50%;
+            border-top: 4px solid transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .results {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .results img {
+            max-width: 50%;
+            border-radius: 10px;
+        }
+        .result-details {
+            margin-left: 20px;
+            text-align: left;
+        }
+        .result-details h2 {
+            margin-top: 0;
+        }
+        .result-details p {
+            margin: 5px 0;
+        }
+        .result-details label {
+            color: #26a541;
+        }
+        .row{
+        display: flex;
+  align-items: center;
+  justify-content: center;
+        }
+        a{
+        color:white;
+        text-decoration:none;
+        }
+        .min {
+        background-color: rgba(0, 0, 0, 0.5);
+            border: 2px solid #26a541;
+            padding: 5px 20px;
+        }
+        .min:hover{
+        color: white;
+            background-color: #26a541;
+        }
+    </style>
+    <script>
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+        function showFileName(input) {
+            const fileName = input.files[0].name;
+            document.getElementById('file-name').innerText = 'Selected file: ' + fileName;
+        }
+    </script>
+</head>
+<body>
+    <br><br>  <br><br>  <br><br>  <br><br>  <br><br>  <br><br>  <br><br>  <br><br>  <br><br>
+    <div class="container">
+        <header>
+            <h3>Freshness Detector</h3>
+        </header><br><br>
+        <div style="display: flex; justify-content: space-between; margin: 10px 0;">
+            <div align="left"><button class="btn min"><a href="/">Home</a></button></div>
+            <div align="right"><button class="btn min"><a href="history">History</a></button></div>
+        </div>
+        <br><br>
+        <form method="post" enctype="multipart/form-data" onsubmit="showLoading()">
+            {% csrf_token %}
+            <div align="center" class="row">
+            <div class="upload-btn-wrapper">
+                <button class="btn">Upload an image</button>
+                <input type="file" name="image" accept="image/*" required onchange="showFileName(this)">
+            </div>
+                <button type="submit" class="btn">Predict Freshness</button>
+            <p id="file-name"></p>
+</div>
+        </form>
+        <div id="loading" class="loading"></div>
+        {% if image_uploaded %}
+            <div class="results">
+                <img src="{{ uploaded_image_url }}" alt="Uploaded Image">
+                <div class="result-details">
+                    <h2>Results:</h2>
+                    <p><label>Predicted Class:</label> {{ predicted_class }}</p>
+                    <p><label>Confidence Score:</label> {{ confidence_score }}</p>
+                    <p><label>Time Taken:</label> {{ time_taken }} seconds</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

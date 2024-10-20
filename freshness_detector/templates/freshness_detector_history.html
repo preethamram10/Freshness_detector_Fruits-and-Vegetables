@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction History</title>
+    <link rel="icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6u9ZY3oKu6Zh6BZaoUKGOVl4-1dN1r0epxQ&s" type="image/x-icon"> 
+    
+    <style>
+        body {
+            background-image: url("https://img.freepik.com/free-vector/fruit-vegetables-background-design_23-2148507118.jpg");
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        header {
+            background-color: #26a541;
+            color: white;
+            border-radius: 5px;
+            width: 100%;
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #26a541;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        img {
+            max-width: 100px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Prediction History</h1>
+        </header>
+        <table>
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Predicted Class</th>
+                    <th>Confidence Score</th>
+                    <th>Time Taken (s)</th>
+                    <th>Uploaded At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for prediction in predictions %}
+                <tr>
+                    <td><img src="{{ prediction.image.url }}" alt="Image"></td>
+                    <td>{{ prediction.predicted_class }}</td>
+                    <td>{{ prediction.confidence_score }}</td>
+                    <td>{{ prediction.time_taken }}</td>
+                    <td>{{ prediction.uploaded_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
